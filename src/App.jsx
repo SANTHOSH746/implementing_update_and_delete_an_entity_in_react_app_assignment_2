@@ -1,15 +1,28 @@
+import { useEffect, useState } from "react";
 import ItemList from "./components/ItemList";
 
-// use the following link to get the data
-// `/doors` will give you all the doors.
 const API_URI = `https://${import.meta.env.VITE_API_URI}/doors`;
 
 function App() {
-  // Get the existing item from the server
-  // const [items, setItems] = useState(null);
-  // pass the item to UpdateItem as a prop
+  const [items, setItems] = useState([]);
 
-  return <ItemList />;
+  // Fetch data from API when component mounts
+  useEffect(() => {
+    fetch(API_URI)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Fetched items:", data); // Debugging
+        setItems(data);
+      })
+      .catch((error) => console.error("Error fetching data:", error));
+  }, []);
+
+  // Function to delete an item
+  const handleDelete = (id) => {
+    setItems(items.filter((item) => item.id !== id));
+  };
+
+  return <ItemList items={items} handleDelete={handleDelete} />;
 }
 
 export default App;
