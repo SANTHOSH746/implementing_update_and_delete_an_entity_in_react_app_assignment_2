@@ -22,7 +22,16 @@ function App() {
     setItems(items.filter((item) => item.id !== id));
   };
 
-  return <ItemList items={items} handleDelete={handleDelete} />;
+  // Function to edit an item
+  const handleEdit = (id, newName, newStatus) => {
+    setItems(
+      items.map((item) =>
+        item.id === id ? { ...item, name: newName, status: newStatus } : item
+      )
+    );
+  };
+
+  return <ItemList items={items} handleDelete={handleDelete} handleEdit={handleEdit} />;
 }
 
 export default App;
